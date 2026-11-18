@@ -81,12 +81,14 @@ brand/                      # logo files (SVG + PNG)
 
 ## Design choices & challenges
 
-- **Design:** an indigo brand colour signals trust and calm for a business tool, and emerald marks success states. Slate neutrals keep text readable, with contrast at WCAG AA or better.
-- **Hierarchy:** every section uses the same heading component (label, title, description) and the same spacing, so the page reads consistently.
-- **Clean code:** all text lives in `data/content.js`, and sections are generated from that data. Validation rules are Yup schemas in one file. `FormField` connects itself to Formik with `useField`, so each form only lists its fields, with no repeated wiring.
-- **Accessibility:** native `<dialog>` and `<details>` give keyboard support and focus handling for free. All form fields have visible labels, and errors are announced to screen readers.
-- **Challenge solved:** checking fields when the user left them (on blur) made an error message appear just as the submit button was clicked. The button moved and the click missed it. With Formik, errors are now shown only after the first submit attempt (`validateOnBlur` is off), and they clear live as the user types, so the layout never shifts under the cursor.
-- **Challenge solved:** sticky navbars normally cover the section heading after an anchor jump. `scroll-margin-top` on each section fixes this without JavaScript.
+1. I chose indigo as the brand colour because it feels trustworthy and calm for a business tool, with emerald for success states and slate greys for readable text.
+2. Every section shares one heading style and spacing scale, so the page has a clear, consistent visual hierarchy on mobile and desktop.
+3. All page text lives in `data/content.js`, and sections are generated from that data, which keeps components short and easy to read.
+4. All page text lives in `data/content.js`, and sections are generated from that data, which keeps components short and easy to read.
+5. Forms use Formik with Yup schemas; a shared `FormField` component connects to Formik itself, so each form only lists its fields.
+6. Native `<dialog>` and `<details>` elements give keyboard support and focus handling, and every field has a visible label and announced errors.
+7. Challenge: showing errors when a field lost focus pushed the submit button down mid-click, so clicks missed; errors now appear on submit and clear as you type.
+8. Challenge: the sticky navbar covered section headings after a link jump, which `scroll-margin-top` fixed without any JavaScript.
 
 ## Screenshots
 
