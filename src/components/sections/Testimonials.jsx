@@ -28,7 +28,7 @@ export default function Testimonials() {
   );
 }
 
-function TestimonialCard({ avater, quote, name, role }) {
+function TestimonialCard({ avatar, quote, name, role }) {
 
 
   return (
@@ -41,7 +41,7 @@ function TestimonialCard({ avater, quote, name, role }) {
       <blockquote className="mt-4 flex-1 leading-relaxed text-slate-700">“{quote}”</blockquote>
       <figcaption className="mt-6 flex items-center gap-3">
         <span className="grid size-10 place-items-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
-          <img src={avater} alt="" className='rounded-[100%]' />
+          <img src={avatar} alt="" className='rounded-[100%]' />
         </span>
         <span>
           <span className="block font-semibold text-slate-900">{name}</span>

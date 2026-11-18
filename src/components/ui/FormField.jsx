@@ -1,8 +1,10 @@
 import { useId } from 'react';
+import { useField, useFormikContext } from 'formik';
 import { ChevronDown } from 'lucide-react';
 
 /**
- * A labelled form control with an inline error message.
+ * A labelled form control with an inline error message, connected to Formik.
+ * Must be rendered inside a <Formik> form.
  *
  * Renders an <input> by default, or a <select> / <textarea> via `as`.
  * Accessibility:
@@ -13,12 +15,20 @@ export default function FormField({
   label,
   name,
   as = 'input',
-  error,
   options = [],
   optional = false,
   className = '',
   ...controlProps
 }) {
+  // useField gives us this field's value/onChange/onBlur and its error from Formik.
+  const [field, meta] = useField(name);
+  const { submitCount } = useFormikContext();
+
+  // Only show errors once the user has tried to submit. After that they update
+  // live as the user types. (Showing them on blur would push the submit button
+  // down mid-click, so the click could miss it.)
+  const error = submitCount > 0 ? meta.error : undefined;
+
   // useId gives each field a unique id, even if two forms share field names.
   const id = useId();
   const errorId = `${id}-error`;
@@ -31,8 +41,8 @@ export default function FormField({
       : 'border-slate-300 hover:border-slate-400 focus:border-indigo-500 focus:ring-indigo-100');
 
   const sharedProps = {
+    ...field, // name, value, onChange, onBlur
     id,
-    name,
     className: controlClasses,
     'aria-invalid': error ? true : undefined,
     'aria-describedby': error ? errorId : undefined,

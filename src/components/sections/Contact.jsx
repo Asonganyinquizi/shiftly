@@ -1,9 +1,12 @@
+import { useState } from 'react';
+import { Formik, Form } from 'formik';
 import { Mail, Phone, MapPin, Clock, Check } from 'lucide-react';
 import Button from '../ui/Button';
 import FormField from '../ui/FormField';
+import FocusFirstError from '../ui/FocusFirstError';
 import SuccessMessage from '../ui/SuccessMessage';
-import { useForm } from '../../hooks/useForm';
-import { validateDemo } from '../../utils/validation';
+import { demoSchema } from '../../utils/validation';
+import { fakeRequest } from '../../utils/fakeRequest';
 import { BRAND, TEAM_SIZES } from '../../data/content';
 
 const INITIAL_VALUES = { name: '', email: '', company: '', teamSize: '', message: '' };
@@ -84,71 +87,77 @@ function ContactDetail({ icon: Icon, label, value, href }) {
 }
 
 function DemoForm() {
-  const { values, errors, status, handleChange, handleSubmit, reset } = useForm(
-    INITIAL_VALUES,
-    validateDemo,
-  );
+  // Holds the submitted values once the request "succeeds" (null until then).
+  const [submitted, setSubmitted] = useState(null);
 
-  // Props every field needs, so each <FormField> below stays short.
-  const fieldProps = (name) => ({
-    name,
-    value: values[name],
-    error: errors[name],
-    onChange: handleChange,
-  });
+  async function handleSubmit(values) {
+    await fakeRequest(); // Formik shows isSubmitting = true while this waits
+    setSubmitted(values);
+  }
 
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-10">
-      {status === 'success' ? (
+      {submitted ? (
         <SuccessMessage
           title="Demo request received!"
           action={
-            <Button variant="secondary" onClick={reset}>
+            // Clearing `submitted` shows a fresh, empty form again.
+            <Button variant="secondary" onClick={() => setSubmitted(null)}>
               Send another request
             </Button>
           }
         >
-          Thanks, {values.name.trim().split(' ')[0]}. We’ll email <strong>{values.email}</strong> within one
-          business day to schedule your demo.
+          Thanks, {submitted.name.trim().split(' ')[0]}. We’ll email <strong>{submitted.email.trim()}</strong>{' '}
+          within one business day to schedule your demo.
         </SuccessMessage>
       ) : (
-        <form onSubmit={handleSubmit()} noValidate>
-          <h3 className="text-xl font-bold text-slate-900">Request a demo</h3>
-          <p className="mt-1 text-sm text-slate-500">All fields are required unless marked optional.</p>
+        <Formik
+          initialValues={INITIAL_VALUES}
+          validationSchema={demoSchema}
+          validateOnBlur={false}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form noValidate>
+              <FocusFirstError />
+              <h3 className="text-xl font-bold text-slate-900">Request a demo</h3>
+              <p className="mt-1 text-sm text-slate-500">All fields are required unless marked optional.</p>
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2">
-            <FormField label="Full name" autoComplete="name" placeholder="Jane Doe" {...fieldProps('name')} />
-            <FormField
-              label="Work email"
-              type="email"
-              autoComplete="email"
-              placeholder="jane@company.com"
-              {...fieldProps('email')}
-            />
-            <FormField
-              label="Company"
-              autoComplete="organization"
-              placeholder="Casa Verde Café"
-              {...fieldProps('company')}
-            />
-            <FormField label="Team size" as="select" options={TEAM_SIZE_OPTIONS} {...fieldProps('teamSize')} />
-            <FormField
-              label="What would you like to see?"
-              as="textarea"
-              optional
-              placeholder="e.g. how shift swaps work for multiple locations"
-              className="sm:col-span-2"
-              {...fieldProps('message')}
-            />
-          </div>
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                <FormField name="name" label="Full name" autoComplete="name" placeholder="Jane Doe" />
+                <FormField
+                  name="email"
+                  label="Work email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="jane@company.com"
+                />
+                <FormField
+                  name="company"
+                  label="Company"
+                  autoComplete="organization"
+                  placeholder="Casa Verde Café"
+                />
+                <FormField name="teamSize" label="Team size" as="select" options={TEAM_SIZE_OPTIONS} />
+                <FormField
+                  name="message"
+                  label="What would you like to see?"
+                  as="textarea"
+                  optional
+                  placeholder="e.g. how shift swaps work for multiple locations"
+                  className="sm:col-span-2"
+                />
+              </div>
 
-          <Button type="submit" size="lg" className="mt-6 w-full" disabled={status === 'submitting'}>
-            {status === 'submitting' ? 'Sending…' : 'Book my demo'}
-          </Button>
-          <p className="mt-3 text-center text-xs text-slate-500">
-            We’ll never share your details. No spam, ever.
-          </p>
-        </form>
+              <Button type="submit" size="lg" className="mt-6 w-full" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending…' : 'Book my demo'}
+              </Button>
+              <p className="mt-3 text-center text-xs text-slate-500">
+                We’ll never share your details. No spam, ever.
+              </p>
+            </Form>
+          )}
+        </Formik>
       )}
     </div>
   );

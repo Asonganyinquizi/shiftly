@@ -2,19 +2,21 @@ import { Repeat, TrendingDown } from 'lucide-react';
 import { images } from '../../data/assets';
 
 /**
- * The hero illustration: a mini weekly schedule.
+ * The hero illustration: an image of the weekly schedule card,
+ * with two floating notification cards on top.
  */
-
-
 export default function ScheduleMockup() {
   return (
-    <div className="relative"
-    >
+    <div className="relative">
       {/* Soft glow behind the card */}
       <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-linear-to-tr from-indigo-200/60 via-violet-100/40 to-emerald-100/60 blur-2xl" />
 
-        <img src={images.schedule} alt=""  className=' w-full h-full shadow-sm shadow-slate-900/10'/>
-  
+      {/* The PNG already includes the card's shadow, so no shadow class here. */}
+      <img
+        src={images.schedule}
+        alt="Shiftly weekly schedule showing four employees and their shifts from Monday to Friday"
+        className="w-full"
+      />
 
       {/* Floating notification cards */}
       <div className="absolute -bottom-7 -left-2 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3.5 py-3 shadow-lg sm:-left-8">
