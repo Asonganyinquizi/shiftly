@@ -16,6 +16,8 @@ import {
   LayoutGrid,
   Send,
 } from 'lucide-react';
+import { images } from './assets';
+
 
 export const BRAND = {
   name: 'Shiftly',
@@ -155,18 +157,21 @@ export const PLANS = [
 
 export const TESTIMONIALS = [
   {
+    avater:images.user1,
     quote:
       'I used to spend my Sunday evenings on the rota. Now it takes 15 minutes and my staff stopped texting me about swaps.',
     name: 'Maria Lopez',
     role: 'Owner, Casa Verde Café',
   },
   {
+    avater:images.user3,
     quote:
       'No-shows dropped by half in the first month thanks to the reminders. The payroll export alone pays for itself.',
     name: 'Daniel Okafor',
     role: 'Operations Manager, FreshFit Gyms',
   },
   {
+    avater:images.user2,
     quote:
       'We run three clinics and finally have one view of who is working where. Setup took an afternoon.',
     name: 'Priya Shah',
