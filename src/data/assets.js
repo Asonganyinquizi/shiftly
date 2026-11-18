@@ -7,5 +7,5 @@ export const images = {
     user1,
     user2,
     user3,
-   schedule
+    schedule
 }
