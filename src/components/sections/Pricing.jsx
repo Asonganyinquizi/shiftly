@@ -78,10 +78,20 @@ function BillingToggle({ billing, onChange }) {
   );
 }
 
-/** Small line of text under the price, e.g. "Billed $288 yearly". */
+/**
+ * Formats a price in Indian rupees with Indian digit grouping,
+ * e.g. 2499 -> "2,499" and 24996 -> "24,996".
+ */
+const rupees = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 0,
+});
+
+/** Small line of text under the price, e.g. "Billed 9,996 yearly". */
 function getBillingNote(price, billing) {
   if (price === 0) return 'Free forever';
-  if (billing === 'yearly') return `Billed $${price * 12} yearly`;
+  if (billing === 'yearly') return `Billed ${rupees.format(price * 12)} yearly`;
   return 'Billed monthly';
 }
 
@@ -106,7 +116,7 @@ function PlanCard({ plan, billing, onSelect }) {
       <p className="mt-1 text-sm text-slate-600">{plan.description}</p>
 
       <p className="mt-6 flex items-baseline gap-1">
-        <span className="text-5xl font-extrabold tracking-tight text-slate-900">${price}</span>
+        <span className="text-5xl font-extrabold tracking-tight text-slate-900">{rupees.format(price)}</span>
         <span className="text-sm font-medium text-slate-500">/ month</span>
       </p>
       <p className="mt-1 text-sm text-slate-500">{getBillingNote(price, billing)}</p>

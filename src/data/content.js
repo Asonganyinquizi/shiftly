@@ -22,11 +22,12 @@ import { images } from './assets';
 export const BRAND = {
   name: 'Shiftly',
   tagline: 'Staff scheduling that runs itself.',
-  email: 'hello@shiftly.app',
-  phone: '+1 (555) 014-2290',
-  phoneHref: 'tel:+15550142290',
-  address: '120 Market Street, San Francisco, CA',
-  hours: 'Mon–Fri, 9am–6pm',
+  // Sample contact details (not a real office or phone line).
+  email: 'hello@shiftly.in',
+  phone: '+91 80 4000 1234',
+  phoneHref: 'tel:+918040001234',
+  address: 'Koramangala, Bengaluru, Karnataka 560034',
+  hours: 'Mon–Sat, 9:30am–6:30pm IST',
 };
 
 /** Links shown in the navbar. `id` must match a section's id attribute. */
@@ -105,8 +106,8 @@ export const STEPS = [
 ];
 
 /**
- * Pricing plans. Prices are per month; `yearly` is the monthly price when
- * billed annually (roughly two months free).
+ * Pricing plans, in Indian rupees . Prices are per month; `yearly` is the
+ * monthly price when billed annually (roughly two months free).
  */
 export const PLANS = [
   {
@@ -127,7 +128,7 @@ export const PLANS = [
     id: 'pro',
     name: 'Pro',
     description: 'For growing businesses with one location.',
-    price: { monthly: 29, yearly: 24 },
+    price: { monthly: 999, yearly: 833 },
     features: [
       'Up to 30 employees',
       'Everything in Starter',
@@ -142,7 +143,7 @@ export const PLANS = [
     id: 'business',
     name: 'Business',
     description: 'For multi-location teams.',
-    price: { monthly: 79, yearly: 66 },
+    price: { monthly: 2499, yearly: 2083 },
     features: [
       'Unlimited employees',
       'Everything in Pro',
