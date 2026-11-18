@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens.
+ * Colours: Tailwind's built-in indigo (brand), emerald (success/accent)
+ * and slate (text & surfaces) palettes are used directly in components.
+ * Here we only set the brand font.
+ */
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    /* Nav links use #anchors; this makes the jump a smooth scroll. */
+    scroll-behavior: smooth;
+  }
+
+  /* Respect users who prefer less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Stop the page scrolling behind an open modal dialog. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-white font-sans text-slate-700 antialiased;
+  }
+
+  /* Sections sit below a sticky navbar, so offset anchor jumps by its height. */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  /* A clear, consistent keyboard focus ring for every interactive element. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-indigo-600;
+  }
+
+  ::selection {
+    @apply bg-indigo-100 text-indigo-900;
+  }
+}
